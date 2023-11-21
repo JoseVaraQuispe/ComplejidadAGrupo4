@@ -40,12 +40,11 @@ def build_movie_graph(movies_data):
     for movie1, data1 in movies_data.items():
         for movie2, data2 in movies_data.items():
             if movie1 != movie2:
-                genre_similarity = 1 if data1['genre'] == data2['genre'] else 0
+                genre_similarity = 0 if data1['genre'] == data2['genre'] else 1
                 rating_difference = abs(data1['rating'] - data2['rating'])
                 year_difference = abs(data1['year'] - data2['year'])
-                director_similarity = 1 if data1.get('director', '') == data2.get('director', '') else 0
-                days_since_release = (datetime.datetime.now().year - data2['year']) * 365
-                weight = genre_similarity + rating_difference + year_difference + (days_since_release / 365) + director_similarity
+                director_similarity = 0 if data1.get('director', '') == data2.get('director', '') else 1
+                weight = genre_similarity + rating_difference + year_difference + director_similarity
                 G.add_edge(movie1, movie2, weight=weight)
 
     return G
